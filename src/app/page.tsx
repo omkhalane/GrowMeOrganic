@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 async function getArtworks(page: number): Promise<ArtworksApiResponse> {
   const fields = 'id,title,place_of_origin,artist_display,inscriptions,date_start,date_end';
-  // Using a limit of 12 for better grid display on some screens
+  // Using a limit of 10 for consistency
   const url = `https://api.artic.edu/api/v1/artworks?page=${page}&fields=${fields}&limit=10`;
 
   try {
@@ -67,7 +67,9 @@ function TableSkeleton() {
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: { page?: string };
+  searchParams?: {
+    page?: string;
+  };
 }) {
   const currentPage = Number(searchParams?.page) || 1;
   const artworksData = await getArtworks(currentPage);
@@ -75,7 +77,7 @@ export default async function Home({
   return (
     <main className="container mx-auto py-10 px-4">
       <header className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold mb-2">Art Institute Explorer</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-2">Art Institute Explorer</h1>
         <p className="text-muted-foreground text-lg">Discover masterpieces from Chicago's collection</p>
       </header>
       <Suspense key={currentPage} fallback={<TableSkeleton />}>
